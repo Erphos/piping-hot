@@ -2,16 +2,16 @@
 <html lang="en">
 
 <body style="margin: 0px;">
-  <script type="module">
+<script type="module">
     import './restart-audio-context.js'
-    import init from './bevy_game.js'
+    import init from './pipe_game.js'
 
     init().catch((error) => {
-      if (!error.message.startsWith("Using exceptions for control flow, don't mind me. This isn't actually an error!")) {
-        throw error;
-      }
+        if (!error.message.startsWith("Using exceptions for control flow, don't mind me. This isn't actually an error!")) {
+            throw error;
+        }
     });
-  </script>
+</script>
 </body>
 
 </html>

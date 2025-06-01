@@ -1,3 +1,10 @@
+mod assets;
+mod game;
+mod menu;
+
+use crate::assets::AssetsPlugin;
+use crate::game::PipeGamePlugin;
+use crate::menu::MenuPlugin;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 
@@ -10,14 +17,23 @@ fn main() {
             meta_check: AssetMetaCheck::Never,
             ..default()
         }))
+        .add_plugins(MeshPickingPlugin)
+        .init_state::<AppState>()
+        .add_plugins((AssetsPlugin, MenuPlugin, PipeGamePlugin))
         .add_systems(Startup, setup)
         .run();
 }
 
-fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+#[derive(States, Debug, Hash, PartialEq, Eq, Clone, Default)]
+pub enum AppState {
+    #[default]
+    LoadingAssets,
+    MainMenu,
+    LoadingLevel,
+    InGame,
+}
+
+fn setup(mut commands: Commands) {
+    // Default UI camera
     commands.spawn(Camera2d);
-    commands.spawn(Sprite {
-        image: asset_server.load("ducky.png"),
-        ..Default::default()
-    });
 }

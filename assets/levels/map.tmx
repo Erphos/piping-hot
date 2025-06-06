@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="4" height="4" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#000000" nextlayerid="2" nextobjectid="1">
+ <properties>
+  <property name="level_name" value="Introduction"/>
+ </properties>
+ <tileset firstgid="1" name="pipes" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="../../../../../Documents/pipes.png" width="256" height="256"/>
+ </tileset>
+ <layer id="1" name="Tile Layer 1" width="4" height="4">
+  <data encoding="csv">
+3,2,3,2684354563,
+1,5,3221225475,3221225476,
+4,1610612739,2,2684354563,
+5,3,8,3221225475
+</data>
+ </layer>
+</map>

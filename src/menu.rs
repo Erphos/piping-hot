@@ -2,6 +2,7 @@
 
 use crate::AppState;
 use crate::assets::UiAssets;
+use crate::level::LoadNextLevel;
 use bevy::prelude::*;
 
 pub struct MenuPlugin;
@@ -103,11 +104,15 @@ fn menu_action(
     interaction_query: Query<(&Interaction, &MenuAction), (Changed<Interaction>, With<Button>)>,
     mut app_exit_events: EventWriter<AppExit>,
     mut app_state: ResMut<NextState<AppState>>,
+    mut load_level: EventWriter<LoadNextLevel>,
 ) {
     for (interaction, menu_action) in &interaction_query {
         if *interaction == Interaction::Pressed {
             match menu_action {
-                MenuAction::StartGame => app_state.set(AppState::LoadingLevel),
+                MenuAction::StartGame => {
+                    load_level.write(LoadNextLevel("levels/map.tmx".into()));
+                    app_state.set(AppState::LoadingLevel);
+                }
                 MenuAction::Quit => {
                     app_exit_events.write(AppExit::Success);
                 }

@@ -1,10 +1,14 @@
 mod assets;
 mod game;
+mod level;
 mod menu;
+mod pipes;
 
 use crate::assets::AssetsPlugin;
 use crate::game::PipeGamePlugin;
+use crate::level::LevelPlugin;
 use crate::menu::MenuPlugin;
+use crate::pipes::PipePlugin;
 use bevy::asset::AssetMetaCheck;
 use bevy::prelude::*;
 
@@ -19,7 +23,13 @@ fn main() {
         }))
         .add_plugins(MeshPickingPlugin)
         .init_state::<AppState>()
-        .add_plugins((AssetsPlugin, MenuPlugin, PipeGamePlugin))
+        .add_plugins((
+            AssetsPlugin,
+            MenuPlugin,
+            LevelPlugin,
+            PipePlugin,
+            PipeGamePlugin,
+        ))
         .add_systems(Startup, setup)
         .run();
 }
@@ -35,5 +45,11 @@ pub enum AppState {
 
 fn setup(mut commands: Commands) {
     // Default UI camera
-    commands.spawn(Camera2d);
+    commands.spawn((
+        Camera2d,
+        Camera {
+            order: 99,
+            ..default()
+        },
+    ));
 }

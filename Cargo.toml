@@ -17,6 +17,9 @@ opt-level = 3
 
 [dependencies]
 bevy_asset_loader = "0.23.0"
+thiserror = "2.0"
+tiled = { version = "0.13.0", features = ["wasm"] }
+futures-lite = "2.6.0"
 
 [dependencies.bevy]
 version = "0.16"

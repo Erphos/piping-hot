@@ -40,6 +40,9 @@ pub struct LevelLoaded(pub Handle<Level>);
 #[derive(Resource, Debug)]
 pub struct LevelInLoading(pub Handle<Level>);
 
+#[derive(Resource, Debug)]
+pub struct CurrentLevel(pub Handle<Level>);
+
 impl Plugin for LevelPlugin {
     fn build(&self, app: &mut App) {
         app.add_event::<LoadNextLevel>()
@@ -64,7 +67,7 @@ fn begin_loading_level(
     mut events: EventReader<LoadNextLevel>,
 ) {
     if let Some(event) = events.read().last() {
-        error!("Loading next level: {:?}", event);
+        info!("Loading next level: {:?}", event);
         commands.insert_resource(LevelInLoading(asset_server.load(event.0.to_owned())));
     }
 }
@@ -84,19 +87,23 @@ fn wait_for_level_data(
         for (index, tile) in level.data.tiles.iter().enumerate() {
             let row = ((index as f32) / level.data.size.x as f32).floor();
             let column = ((index as f32) % level.data.size.x as f32).floor();
-            let tile_center = Vec2::new(row * 2., column * 2.) - level_offset;
+            let tile_center = Vec2::new(column * 2., row * 2.) - level_offset;
 
             if let Some(pipe) = pipe_archetypes.get(tile) {
+                info!("Spawning pipe {}", tile);
                 commands.spawn((
                     pipe.clone(),
                     SceneRoot(pipe.model.clone()),
                     Transform::from_xyz(tile_center.x, 0., tile_center.y),
                 ));
+            } else {
+                warn!("Level has unknown pipe: {}", tile);
             }
         }
 
         // send event
         loaded_events.write(LevelLoaded(level_in_loading.0.clone()));
+        commands.insert_resource(CurrentLevel(level_in_loading.0.clone()));
     }
 }
 
@@ -152,7 +159,7 @@ impl AssetLoader for LevelLoader {
                 let tile = tile_layer
                     .get_tile(x as i32, y as i32)
                     .expect("each cell should have a tile in the level");
-                tiles.push(tile.tileset_index() as u32);
+                tiles.push(tile.id());
             }
         }
 
@@ -182,6 +189,7 @@ impl AssetLoader for LevelLoader {
 }
 
 mod bytereader {
+    // Taken from https://github.com/adrien-bon/bevy_ecs_tiled/blob/main/src/reader.rs
     use bevy::asset::LoadContext;
     use std::{
         io::{Cursor, Error as IoError, ErrorKind, Read},

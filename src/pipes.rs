@@ -21,27 +21,117 @@ impl Plugin for PipePlugin {
 fn initialize_pipe_archetypes(mut commands: Commands, asset_server: Res<AssetServer>) {
     let mut pipes = PipeArchetypes(HashMap::new());
 
-    for i in 0..16 {
-        pipes.insert(
-            i,
-            Pipe {
-                source: None,
-                sink: None,
-                slots: [
-                    Slot::Bidirectional,
-                    Slot::Bidirectional,
-                    Slot::None,
-                    Slot::None,
-                ],
-                progress: 0.0,
-                progress_rate: 1.0,
-                internal_routing: vec![InternalRouting::passthrough(0, 1)],
-                model: asset_server
-                    .load(GltfAssetLabel::Scene(i as usize).from_asset("models/pipe.glb")),
-                locked: false,
-            },
-        );
-    }
+    // Input
+    pipes.insert(
+        16,
+        Pipe {
+            source: Some("water".into()),
+            sink: None,
+            slots: [Slot::Output, Slot::None, Slot::None, Slot::None],
+            progress: 0.0,
+            progress_rate: 1.0,
+            internal_routing: vec![],
+            model: asset_server.load(GltfAssetLabel::Scene(6).from_asset("models/pipe.glb")),
+            locked: false,
+        },
+    );
+
+    // Output
+    pipes.insert(
+        32,
+        Pipe {
+            source: None,
+            sink: Some("water".into()),
+            slots: [Slot::Input, Slot::None, Slot::None, Slot::None],
+            progress: 0.0,
+            progress_rate: 1.0,
+            internal_routing: vec![],
+            model: asset_server.load(GltfAssetLabel::Scene(6).from_asset("models/pipe.glb")),
+            locked: false,
+        },
+    );
+
+    // Straight pipe
+    pipes.insert(
+        0,
+        Pipe {
+            source: None,
+            sink: None,
+            slots: [
+                Slot::Bidirectional,
+                Slot::None,
+                Slot::Bidirectional,
+                Slot::None,
+            ],
+            progress: 0.0,
+            progress_rate: 1.0,
+            internal_routing: vec![InternalRouting::passthrough(0, 2)],
+            model: asset_server.load(GltfAssetLabel::Scene(0).from_asset("models/pipe.glb")),
+            locked: false,
+        },
+    );
+
+    // Curved pipe
+    pipes.insert(
+        1,
+        Pipe {
+            source: None,
+            sink: None,
+            slots: [
+                Slot::Bidirectional,
+                Slot::Bidirectional,
+                Slot::None,
+                Slot::None,
+            ],
+            progress: 0.0,
+            progress_rate: 1.0,
+            internal_routing: vec![InternalRouting::passthrough(0, 1)],
+            model: asset_server.load(GltfAssetLabel::Scene(1).from_asset("models/pipe.glb")),
+            locked: false,
+        },
+    );
+
+    // Cork
+    pipes.insert(
+        2,
+        Pipe {
+            source: None,
+            sink: None,
+            slots: [Slot::Bidirectional, Slot::None, Slot::None, Slot::None],
+            progress: 0.0,
+            progress_rate: 1.0,
+            internal_routing: vec![InternalRouting::passthrough(0, 5)],
+            model: asset_server.load(GltfAssetLabel::Scene(2).from_asset("models/pipe.glb")),
+            locked: false,
+        },
+    );
+
+    // T pipe
+    pipes.insert(
+        3,
+        Pipe {
+            source: None,
+            sink: None,
+            slots: [
+                Slot::Bidirectional,
+                Slot::Bidirectional,
+                Slot::Bidirectional,
+                Slot::None,
+            ],
+            progress: 0.0,
+            progress_rate: 1.0,
+            internal_routing: vec![
+                InternalRouting::mix(0, 5),
+                InternalRouting::mix(1, 5),
+                InternalRouting::mix(2, 5),
+                InternalRouting::passthrough(5, 0),
+                InternalRouting::passthrough(5, 1),
+                InternalRouting::passthrough(5, 2),
+            ],
+            model: asset_server.load(GltfAssetLabel::Scene(3).from_asset("models/pipe.glb")),
+            locked: false,
+        },
+    );
 
     commands.insert_resource(pipes);
 }

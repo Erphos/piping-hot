@@ -3118,6 +3118,7 @@ dependencies = [
  "bevy",
  "bevy_asset_loader",
  "futures-lite",
+ "serde",
  "thiserror 2.0.12",
  "tiled",
 ]

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="7" height="7" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" source="pipes.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="7" height="7">
+  <data encoding="csv">
+2,1,1,2684354562,2684354562,1610612739,2,
+4,17,1,2684354562,2,1610612739,2684354562,
+2,1,2684354563,2684354561,2,3221225473,2684354564,
+2684354561,2,49,3221225476,3221225474,3,2684354561,
+2684354561,1610612738,5,2684354562,2,5,3221225474,
+2684354561,4,5,1610612738,3221225476,3221225476,3221225507,
+2,2,4,2,3,4,2
+</data>
+ </layer>
+</map>

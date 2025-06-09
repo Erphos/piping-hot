@@ -156,10 +156,12 @@ impl AssetLoader for LevelLoader {
 
         for y in 0..map.height {
             for x in 0..map.width {
-                let tile = tile_layer
-                    .get_tile(x as i32, y as i32)
-                    .expect("each cell should have a tile in the level");
-                tiles.push(tile.id());
+                if let Some(tile) = tile_layer
+                    .get_tile(x as i32, y as i32) {
+                    tiles.push(tile.id());
+                } else {
+                    tiles.push(0xF);
+                }
             }
         }
 

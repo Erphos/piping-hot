@@ -12,7 +12,7 @@ pub struct ModelAssets {
 
 #[derive(AssetCollection, Resource, Debug)]
 pub struct UiAssets {
-    #[asset(path = "fonts/Knewave-Regular.ttf")]
+    #[asset(path = "fonts/Nunito-Black.ttf")]
     pub button_font: Handle<Font>,
 }
 

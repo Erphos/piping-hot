@@ -1,11 +1,13 @@
 mod assets;
 mod game;
+mod level_select;
 mod level;
 mod menu;
 mod pipes;
 
 use crate::assets::AssetsPlugin;
 use crate::game::PipeGamePlugin;
+use crate::level_select::LevelSelectPlugin;
 use crate::level::LevelPlugin;
 use crate::menu::MenuPlugin;
 use crate::pipes::PipePlugin;
@@ -26,6 +28,7 @@ fn main() {
         .add_plugins((
             AssetsPlugin,
             MenuPlugin,
+            LevelSelectPlugin,
             LevelPlugin,
             PipePlugin,
             PipeGamePlugin,
@@ -39,6 +42,7 @@ pub enum AppState {
     #[default]
     LoadingAssets,
     MainMenu,
+    LevelSelect,
     LoadingLevel,
     InGame,
 }
